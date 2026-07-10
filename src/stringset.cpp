@@ -1,19 +1,29 @@
 #include "stringset.hpp"
 
+#include <algorithm>
+#include <string>
+
 namespace containers {
-StringSet::StringSet() {}
-
-StringSet::StringSet(const StringSet&) {}
-
-StringSet::StringSet(StringSet&&) {}
-
-StringSet& StringSet::operator=(const StringSet&) {
-    return *this;
+bool StringSet::contains(const std::string& data) const noexcept {
+    auto it = std::lower_bound(this->set.begin(), this->set.end(), data);
+    return it != this->set.end() && *it == data;
 }
 
-StringSet& StringSet::operator=(StringSet&&) {
-    return *this;
+bool StringSet::add(const std::string& data) {
+    auto it = std::lower_bound(this->set.begin(), this->set.end(), data);
+    if (it != this->set.end() && *it == data) {
+        return false;
+    }
+    set.insert(it, data);
+    return true;
 }
 
-StringSet::~StringSet() {}
+bool StringSet::remove(const std::string& data) {
+    auto it = std::lower_bound(this->set.begin(), this->set.end(), data);
+    if (it == this->set.end()) {
+        return false;
+    }
+    set.erase(it);
+    return true;
+}
 } // namespace containers
