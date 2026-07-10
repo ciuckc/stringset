@@ -93,3 +93,27 @@ TEST(StringSetRemove, RemoveSimilarPrefixNonExistentStringDoesNotRemoveThePresen
     EXPECT_FALSE(set.remove("desktop"));
     EXPECT_TRUE(set.contains("desktops"));
 }
+
+TEST(StringSetIterator, BeginIsEqualToEnd) {
+    containers::StringSet set{};
+
+    EXPECT_TRUE(set.begin() == set.end());
+}
+
+TEST(StringSetIterator, IterationIsOrdered) {
+    containers::StringSet set{};
+    std::vector<std::string> expected{"bronze", "apple", "banana",
+        "cristal", "1302031l", "something", "freesbee",
+        "okeiokei", "\t\t\t\t"};
+
+    for (auto str : expected) {
+        set.add(str);
+    }
+    std::sort(expected.begin(), expected.end());
+
+    int i = 0;
+    for (auto str : set) {
+        EXPECT_TRUE(str == expected[i]);
+        ++i;
+    }
+}
