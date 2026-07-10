@@ -20,7 +20,7 @@ bool StringSet::add(const std::string& data) {
 
 bool StringSet::remove(const std::string& data) {
     auto it = std::lower_bound(this->set.begin(), this->set.end(), data);
-    if (it == this->set.end()) {
+    if (it == this->set.end() || *it != data) {
         return false;
     }
     set.erase(it);

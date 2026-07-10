@@ -6,6 +6,13 @@
 namespace containers {
 class StringSet {
 public:
+    class iterator {
+    public:
+
+    private:
+
+    };
+
     StringSet() = default;
     StringSet(const StringSet&) = default;
     StringSet(StringSet&&) = default;

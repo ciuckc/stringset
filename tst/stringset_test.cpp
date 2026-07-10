@@ -76,3 +76,20 @@ TEST(StringSetAddRemoveContains, AddRandomStringAndRemoveTwiceReturnsTrueAndFals
     EXPECT_FALSE(set.remove("desktop"));
     EXPECT_FALSE(set.contains("desktop"));
 }
+
+TEST(StringSetRemove, RemoveAddedStringDoesNotRemoveTheOtherString) {
+    containers::StringSet set{};
+
+    EXPECT_TRUE(set.add("desktop"));
+    EXPECT_TRUE(set.add("mouse"));
+    EXPECT_TRUE(set.remove("desktop"));
+    EXPECT_TRUE(set.contains("mouse"));
+}
+
+TEST(StringSetRemove, RemoveSimilarPrefixNonExistentStringDoesNotRemoveThePresentString) {
+    containers::StringSet set{};
+
+    EXPECT_TRUE(set.add("desktops"));
+    EXPECT_FALSE(set.remove("desktop"));
+    EXPECT_TRUE(set.contains("desktops"));
+}
