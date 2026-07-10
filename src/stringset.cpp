@@ -33,7 +33,7 @@ bool operator==(const StringSet::iterator& a, const StringSet::iterator& b) {
 }
 
 bool operator!=(const StringSet::iterator& a, const StringSet::iterator& b) {
-    return a.it == b.it;
+    return a.it != b.it;
 }
 
 bool StringSet::contains(const std::string& data) const noexcept {
