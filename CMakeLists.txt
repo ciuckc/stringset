@@ -12,7 +12,7 @@ add_subdirectory(src)
 
 if(BUILD_TESTS)
     enable_testing()
-    add_subdirectory(tst EXCLUDE_FROM_ALL)
+    add_subdirectory(tst)
 endif()
 
 if(BUILD_BENCH)

@@ -5,7 +5,7 @@
 namespace containers {
 class StringHashSet {
 public:
-    StringHashSet(size_t bucket_count);
+    explicit StringHashSet(size_t bucket_count);
     StringHashSet() = default;
     StringHashSet(const StringHashSet&) = default;
     StringHashSet& operator=(const StringHashSet&) = default;
@@ -18,6 +18,7 @@ public:
     bool contains(const std::string& data);
     size_t size() const noexcept;
     float loadFactor() const noexcept;
+    void rehash(size_t count);
 
 private:
     struct Node {
@@ -25,7 +26,8 @@ private:
         bool occupied{false};
     };
 
-    std::vector<Node> map{};
+    std::vector<Node> map{64};
     size_t count{};
+    float maximumLoadFactor{0.8};
 };
 } // namespace containers
