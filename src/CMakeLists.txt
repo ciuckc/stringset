@@ -13,3 +13,5 @@ target_compile_options(stringset
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Werror -Wextra>)
 
 add_subdirectory(stringflatset)
+
+add_subdirectory(stringhashset)

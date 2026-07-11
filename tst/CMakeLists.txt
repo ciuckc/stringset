@@ -14,3 +14,5 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 fetchcontent_makeavailable(googletest)
 
 add_subdirectory(stringflatset)
+
+add_subdirectory(stringhashset)
