@@ -1,15 +1,16 @@
-include(GoogleTest)
+include(FetchContent)
 
-add_executable(stringset_test)
+# googletest
 
-target_sources(stringset_test
-    PUBLIC
-        stringset_test.cpp)
+fetchcontent_declare(googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG 52eb8108c5bdec04579160ae17225d66034bd723 # VERSION 1.17
+)
 
-target_link_libraries(stringset_test
-    PRIVATE
-        GTest::gtest_main
-        stringset)
+# For gtest so that on windows it uses the shared c runtime lib
+# Not sure I will ever run this project on windows...
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-gtest_discover_tests(stringset_test)
+fetchcontent_makeavailable(googletest)
 
+add_subdirectory(stringflatset)

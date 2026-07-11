@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace containers {
-class StringSet {
+class StringFlatSet {
 public:
     class iterator {
     public:
@@ -26,7 +26,7 @@ public:
         friend bool operator!=(const iterator& a, const iterator& b);
 
     private:
-        friend class StringSet;
+        friend class StringFlatSet;
 
         iterator(const std::vector<std::string>::const_iterator& it);
 
@@ -35,12 +35,12 @@ public:
 
     using const_iterator = iterator;
 
-    StringSet() = default;
-    StringSet(const StringSet&) = default;
-    StringSet(StringSet&&) = default;
-    StringSet& operator=(const StringSet&) = default;
-    StringSet& operator=(StringSet&&) = default;
-    ~StringSet() = default;
+    StringFlatSet() = default;
+    StringFlatSet(const StringFlatSet&) = default;
+    StringFlatSet(StringFlatSet&&) = default;
+    StringFlatSet& operator=(const StringFlatSet&) = default;
+    StringFlatSet& operator=(StringFlatSet&&) = default;
+    ~StringFlatSet() = default;
 
     bool add(const std::string& data);
     bool remove(const std::string& data);

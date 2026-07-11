@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(stringset
+project(stringflatset
     LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-include(Dependencies)
-
-enable_testing()
+option(BUILD_TESTS "Build test" ON)
 
 add_subdirectory(src)
 
-add_subdirectory(tst)
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tst EXCLUDE_FROM_ALL)
+endif()
+
+

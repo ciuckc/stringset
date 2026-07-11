@@ -1,34 +1,34 @@
 #include "gtest/gtest.h"
-#include "stringset.hpp"
+#include "stringflatset/stringflatset.hpp"
 
-TEST(StringSetContains, ContainsEmptyStringReturnsFalse) {
-    containers::StringSet set{};
+TEST(StringFlatSetContains, ContainsEmptyStringReturnsFalse) {
+    containers::StringFlatSet set{};
 
     EXPECT_FALSE(set.contains(""));
 }
 
-TEST(StringSetContains, ContainsRandomStringReturnsFalse) {
-    containers::StringSet set{};
+TEST(StringFlatSetContains, ContainsRandomStringReturnsFalse) {
+    containers::StringFlatSet set{};
 
     EXPECT_FALSE(set.contains("car"));
 }
 
-TEST(StringSetAdd, AddEmptyStringReturnsTrue) {
-    containers::StringSet set{};
+TEST(StringFlatSetAdd, AddEmptyStringReturnsTrue) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add(""));
 }
 
 
-TEST(StringSetAdd, AddRadomStringReturnsTrue) {
-    containers::StringSet set{};
+TEST(StringFlatSetAdd, AddRadomStringReturnsTrue) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("car"));
 }
 
 
-TEST(StringSetAdd, AddMultipleStringReturnsTrue) {
-    containers::StringSet set{};
+TEST(StringFlatSetAdd, AddMultipleStringReturnsTrue) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("car"));
     EXPECT_TRUE(set.add("cart"));
@@ -38,37 +38,37 @@ TEST(StringSetAdd, AddMultipleStringReturnsTrue) {
     EXPECT_TRUE(set.add("carol"));
 }
 
-TEST(StringSetAdd, AddEmptyStringTwiceReturnsTrueAndFalse) {
-    containers::StringSet set{};
+TEST(StringFlatSetAdd, AddEmptyStringTwiceReturnsTrueAndFalse) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add(""));
     EXPECT_FALSE(set.add(""));
 }
 
-TEST(StringSetAdd, AddRandomStringTwiceReturnsTrueAndFalse) {
-    containers::StringSet set{};
+TEST(StringFlatSetAdd, AddRandomStringTwiceReturnsTrueAndFalse) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktop"));
     EXPECT_FALSE(set.add("desktop"));
 }
 
-TEST(StringSetAddContains, AddRandomStringAndContainsReturnTrue) {
-    containers::StringSet set{};
+TEST(StringFlatSetAddContains, AddRandomStringAndContainsReturnTrue) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktop"));
     EXPECT_TRUE(set.contains("desktop"));
 }
 
-TEST(StringSetAddRemoveContains, AddRandomstringAndContainsAndRemoveReturnTrue) {
-    containers::StringSet set{};
+TEST(StringFlatSetAddRemoveContains, AddRandomstringAndContainsAndRemoveReturnTrue) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktop"));
     EXPECT_TRUE(set.contains("desktop"));
     EXPECT_TRUE(set.remove("desktop"));
 }
 
-TEST(StringSetAddRemoveContains, AddRandomStringAndRemoveTwiceReturnsTrueAndFalse) {
-    containers::StringSet set{};
+TEST(StringFlatSetAddRemoveContains, AddRandomStringAndRemoveTwiceReturnsTrueAndFalse) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktop"));
     EXPECT_TRUE(set.contains("desktop"));
@@ -77,8 +77,8 @@ TEST(StringSetAddRemoveContains, AddRandomStringAndRemoveTwiceReturnsTrueAndFals
     EXPECT_FALSE(set.contains("desktop"));
 }
 
-TEST(StringSetRemove, RemoveAddedStringDoesNotRemoveTheOtherString) {
-    containers::StringSet set{};
+TEST(StringFlatSetRemove, RemoveAddedStringDoesNotRemoveTheOtherString) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktop"));
     EXPECT_TRUE(set.add("mouse"));
@@ -86,22 +86,22 @@ TEST(StringSetRemove, RemoveAddedStringDoesNotRemoveTheOtherString) {
     EXPECT_TRUE(set.contains("mouse"));
 }
 
-TEST(StringSetRemove, RemoveSimilarPrefixNonExistentStringDoesNotRemoveThePresentString) {
-    containers::StringSet set{};
+TEST(StringFlatSetRemove, RemoveSimilarPrefixNonExistentStringDoesNotRemoveThePresentString) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.add("desktops"));
     EXPECT_FALSE(set.remove("desktop"));
     EXPECT_TRUE(set.contains("desktops"));
 }
 
-TEST(StringSetIterator, BeginIsEqualToEnd) {
-    containers::StringSet set{};
+TEST(StringFlatSetIterator, BeginIsEqualToEnd) {
+    containers::StringFlatSet set{};
 
     EXPECT_TRUE(set.begin() == set.end());
 }
 
-TEST(StringSetIterator, IterationIsOrdered) {
-    containers::StringSet set{};
+TEST(StringFlatSetIterator, IterationIsOrdered) {
+    containers::StringFlatSet set{};
     std::vector<std::string> expected{"bronze", "apple", "banana",
         "cristal", "1302031l", "something", "freesbee",
         "okeiokei", "\t\t\t\t"};
