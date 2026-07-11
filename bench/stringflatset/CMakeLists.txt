@@ -7,5 +7,5 @@ target_sources(stringflatset_bench
 target_link_libraries(stringflatset_bench
     PRIVATE
         benchmark::benchmark
-        stringflatset)
+        stringset)
 

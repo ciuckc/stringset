@@ -9,6 +9,6 @@ target_sources(stringflatset_test
 target_link_libraries(stringflatset_test
     PRIVATE
         GTest::gtest_main
-        stringflatset)
+        stringset)
 
 gtest_discover_tests(stringflatset_test)
