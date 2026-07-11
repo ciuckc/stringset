@@ -6,6 +6,7 @@ project(stringflatset
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(BUILD_TESTS "Build test" ON)
+option(BUILD_BENCH "Build benchmark" OFF)
 
 add_subdirectory(src)
 
@@ -14,4 +15,7 @@ if(BUILD_TESTS)
     add_subdirectory(tst EXCLUDE_FROM_ALL)
 endif()
 
+if(BUILD_BENCH)
+    add_subdirectory(bench EXCLUDE_FROM_ALL)
+endif()
 

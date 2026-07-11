@@ -1,0 +1,115 @@
+#include <benchmark/benchmark.h>
+
+#include <algorithm>
+#include <random>
+#include <set>
+#include <string>
+#include <vector>
+
+#include "stringflatset/stringflatset.hpp"
+
+namespace {
+std::vector<std::string> makeStrings(int64_t n) {
+    std::vector<std::string> strings;
+    strings.reserve(n);
+    for (int i = 0; i < n; ++i) {
+        strings.push_back(std::to_string(i));
+    }
+    std::mt19937 rng(777);
+    std::shuffle(strings.begin(), strings.end(), rng);
+    return strings;
+}
+
+void BM_StringFlatSet_add(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    for (auto _ : state) {
+        containers::StringFlatSet set;
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.add(s));
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+
+void BM_StringFlatSet_contains(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    containers::StringFlatSet set;
+    for (const auto& s : strings) {
+        set.add(s);
+    }
+    for (auto _ : state) {
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.contains(s));
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+
+void BM_StringFlatSet_remove(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    for (auto _ : state) {
+        state.PauseTiming();
+        containers::StringFlatSet set;
+        for (const auto& s : strings) {
+            set.add(s);
+        }
+        state.ResumeTiming();
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.remove(s));
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+
+void BM_StdSetStdString_add(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    for (auto _ : state) {
+        std::set<std::string> set;
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.insert(s));
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+
+void BM_StdSetStdString_contains(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    std::set<std::string> set;
+    for (const auto& s : strings) {
+        set.insert(s);
+    }
+    for (auto _ : state) {
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.find(s) != set.end());
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+void BM_StdSetStdString_remove(benchmark::State& state) {
+    const auto strings = makeStrings(state.range(0));
+    for (auto _ : state) {
+        state.PauseTiming();
+        std::set<std::string> set;
+        for (const auto& s : strings) {
+            set.insert(s);
+        }
+        state.ResumeTiming();
+        for (const auto& s : strings) {
+            benchmark::DoNotOptimize(set.erase(s));
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * strings.size());
+}
+} // namespace
+
+BENCHMARK(BM_StringFlatSet_add)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StringFlatSet_contains)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StringFlatSet_remove)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StdSetStdString_add)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StdSetStdString_contains)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StdSetStdString_remove)->Range(8, 8 << 10);
