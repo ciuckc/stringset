@@ -11,23 +11,15 @@ StringHashSet::StringHashSet(size_t bucket_count)
     maximumLoadFactor(0.8f) {}
 
 bool StringHashSet::add(const std::string& data) {
-    if (this->contains(data)) {
-        return false;
-    }
     if (this->loadFactor() >= this->maximumLoadFactor) {
-        // for now just double the size
         rehash(this->map.size() << 1);
     }
-    std::hash<std::string> hashFunction;
-    // because of contains we hash twice which is not efficient
-    // TODO: split it up
-    auto i = hashFunction(data) % this->map.size();
-    while (this->map[i].occupied) {
-        // modulo is slow
-        i = (i + 1) % this->map.size();
+    Node& node = this->findNodeFromIndex(data, this->getInitialNodeIndex(data));
+    if (node.occupied && node.key == data) {
+        return false;
     }
-    this->map[i].key = data;
-    this->map[i].occupied = true;
+    node.key = data;
+    node.occupied = true;
     ++this->count;
     return true;
 }
@@ -40,20 +32,8 @@ bool StringHashSet::remove(const std::string& data) {
 }
 
 bool StringHashSet::contains(const std::string& data) {
-    std::hash<std::string> hashFunction;
-
-    auto i = hashFunction(data) % this->map.size();
-    for (auto probe = 0ul; probe < this->map.size(); ++probe) {
-        if (!this->map[i].occupied) {
-            break;
-        }
-        if (this->map[i].key == data) {
-            return true;
-        } else {
-            i = (i + 1) % this->map.size();
-        }
-    }
-    return false;
+    Node& node = this->findNodeFromIndex(data, this->getInitialNodeIndex(data));
+    return node.occupied && node.key == data;
 }
 
 void StringHashSet::rehash(size_t bucketCount) {
@@ -77,11 +57,22 @@ void StringHashSet::rehash(size_t bucketCount) {
     this->map = std::move(newMap);
 }
 
-size_t StringHashSet::size() const noexcept {
-    return this->count;
-}
-
 float StringHashSet::loadFactor() const noexcept {
     return this->map.size() != 0 ? static_cast<float>(this->count) / this->map.size() : 0.0f;
+}
+
+size_t StringHashSet::getInitialNodeIndex(const std::string& data) const {
+    std::hash<std::string> hashFunction;
+    return hashFunction(data) % this->map.size();
+}
+
+StringHashSet::Node& StringHashSet::findNodeFromIndex(const std::string& data, size_t i) {
+    for (auto probe = 0ul; probe < this->map.size(); ++probe) {
+        if (!this->map[i].occupied || this->map[i].key == data) {
+            break;
+        }
+        i = (i + 1) % this->map.size();
+    }
+    return this->map[i];
 }
 } // namespace containers
