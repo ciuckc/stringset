@@ -13,7 +13,7 @@ std::vector<std::string> makeStrings(int64_t n) {
     std::vector<std::string> strings;
     strings.reserve(n);
     for (int i = 0; i < n; ++i) {
-        strings.push_back(std::to_string(i));
+        strings.push_back("Very long string to get rid of the small buffer optimization from std::string" + std::to_string(i));
     }
     std::mt19937 rng(777);
     std::shuffle(strings.begin(), strings.end(), rng);
@@ -104,12 +104,12 @@ void BM_StdSetStdString_remove(benchmark::State& state) {
 
 BENCHMARK(BM_StringFlatSet_add)->Range(8, 8 << 10);
 
-BENCHMARK(BM_StringFlatSet_contains)->Range(8, 8 << 10);
-
-BENCHMARK(BM_StringFlatSet_remove)->Range(8, 8 << 10);
-
 BENCHMARK(BM_StdSetStdString_add)->Range(8, 8 << 10);
 
+BENCHMARK(BM_StringFlatSet_contains)->Range(8, 8 << 10);
+
 BENCHMARK(BM_StdSetStdString_contains)->Range(8, 8 << 10);
+
+BENCHMARK(BM_StringFlatSet_remove)->Range(8, 8 << 10);
 
 BENCHMARK(BM_StdSetStdString_remove)->Range(8, 8 << 10);
