@@ -29,7 +29,26 @@ set.
 ### StringHashSet
 
 Second implementation is `StringHashSet` and as expected the underlying data
-structure used is an unordered open addressed hash map.
+structure used is an unordered open addressed hash map. To avoid the common
+pitfalls that the basic open addressed hash map offers, I used two techniques.
+
+For insertion, I am using Robin Hood linear probing, which reduces the probing
+time that normal linear probing suffers from. For erasure, I am using backward
+shifting so that following occupied nodes are moved into the erased slot, instead
+of leaving a tombstone. These two together keep probe distances relatively low,
+compared to a full table scan that I had before, and also help with the deletion
+time.
+
+Overall, the implementation beats `std::set` as the data set grows, but not
+`std::unordered_set`, although it comes close on `remove` operations. Currently,
+the `StringHashSet` is an array of structs. Theoretically, an implementation
+that wouldn't waste so much of the cache line would do much better than
+`std::unordered_set`. Each time we load a `Node`(which is 40 bytes), and we
+don't have a successful hash hit we discard around 24 to 32 bytes, depending
+on the std lib used. A better data segregation would be to keep the hash
+and the distance together and the strings in another array, which would
+speed up the search, but it would add a bit of overhead to `add` / `remove`
+operations, since we would have to touch separate arrays.
 
 ## Build and run
 
