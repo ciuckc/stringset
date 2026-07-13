@@ -18,8 +18,10 @@ target_sources(bench
         benchmark.cpp)
 
 add_subdirectory(stringflatset)
+add_subdirectory(stringhashset)
 
 target_link_libraries(bench
     PRIVATE
         benchmark::benchmark
-        stringflatset_bench)
+        stringflatset_bench
+        stringhashset_bench)
